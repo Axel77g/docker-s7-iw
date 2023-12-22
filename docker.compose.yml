@@ -1,0 +1,28 @@
+services:
+  composer:
+    build:
+      context: .
+      dockerfile: docker/composer/composer.Dockerfile
+    volumes:
+      - .:/var/www/html
+  postgres:
+    build:
+      context: .
+      dockerfile: docker/postgres/postgres.Dockerfile
+  symfony:
+    build:
+      context: .
+      dockerfile: docker/symfony/symfony.Dockerfile
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - postgres
+      - composer
+  adminer:
+    build:
+        context: .
+        dockerfile: docker/adminer/adminer.Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
