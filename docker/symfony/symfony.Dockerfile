@@ -1,1 +1,1 @@
-FROM php
+FROM alpine
