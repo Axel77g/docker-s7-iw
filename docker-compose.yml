@@ -12,11 +12,11 @@ services:
       context: docker/postgres
       dockerfile: postgres.Dockerfile
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-testing}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-testing}
-      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-toto}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-toto_password}
+      POSTGRES_DB: ${POSTGRES_DB:-db_default}
     ports:
-      - 5555:5432
+      - 5432:5432
   # symfony service
   symfony:
     build:
