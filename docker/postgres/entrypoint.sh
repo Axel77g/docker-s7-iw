@@ -22,7 +22,9 @@ fi
 #Grant privileges
 if [ $new_user -eq 1 ] || [ $new_db -eq 1 ]; then
   echo "Granting privileges to user $POSTGRES_USER on database $POSTGRES_DB."
-  psql -c "GRANT ALL PRIVILEGES ON DATABASE $POSTGRES_DB TO $POSTGRES_USER;"
+  psql -U postgres -d $POSTGRES_DB -c "GRANT ALL PRIVILEGES ON DATABASE $POSTGRES_DB TO $POSTGRES_USER;"
+  psql -U postgres -d $POSTGRES_DB -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO $POSTGRES_USER;"
+  psql -U postgres -d $POSTGRES_DB -c "GRANT CREATE ON SCHEMA public TO $POSTGRES_USER;"
 fi
 
 echo "Database $POSTGRES_DB and user $POSTGRES_USER are ready to use."
