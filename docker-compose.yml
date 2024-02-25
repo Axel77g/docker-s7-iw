@@ -17,6 +17,8 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-postgres}
     ports:
       - 5555:5432
+    networks:
+      - dockerNetwork
   # symfony service
   symfony:
     build:
@@ -30,9 +32,15 @@ services:
   # database adminer service
   adminer:
     build:
-        context: .
-        dockerfile: docker/adminer/adminer.Dockerfile
+        context: docker/adminer
+        dockerfile: adminer.Dockerfile
     ports:
       - 8080:8080
     depends_on:
       - postgres
+    networks:
+      - dockerNetwork
+
+networks:
+  dockerNetwork:
+    driver: bridge
