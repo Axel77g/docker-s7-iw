@@ -6,6 +6,8 @@ services:
       dockerfile: composer.Dockerfile
     volumes:
       - ./:/var/www/html
+    networks:
+      - dockerNetwork
   # database postgres service
   postgres:
     build:
@@ -15,20 +17,31 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-testing}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-testing}
       POSTGRES_DB: ${POSTGRES_DB:-postgres}
-    ports:
-      - 5555:5432
     networks:
       - dockerNetwork
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-testing} -d ${POSTGRES_DB:-postgres}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 6
   # symfony service
   symfony:
     build:
-      context: .
-      dockerfile: docker/symfony/symfony.Dockerfile
+      context: docker/symfony
+      dockerfile: symfony.Dockerfile
     volumes:
-      - .:/var/www/html
+      - ./:/var/www/html
     depends_on:
-      - postgres
-      - composer
+      postgres:
+        condition: service_healthy
+      composer:
+        condition: service_completed_successfully
+    ports:
+      - 8000:8000
+    networks:
+      - dockerNetwork
   # database adminer service
   adminer:
     build:
@@ -37,10 +50,12 @@ services:
     ports:
       - 8080:8080
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     networks:
       - dockerNetwork
-
 networks:
   dockerNetwork:
     driver: bridge
+volumes:
+    postgres:
