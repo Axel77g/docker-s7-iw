@@ -1,0 +1,15 @@
+<h1>Mes todos</h1>
+<ul>
+    {% for todo in todos %}
+        <li>
+            {% if todo.isDone %}
+                [X]
+            {% else %}
+                [ ]
+            {% endif %}
+
+            {{ todo.title }}
+        </li>
+    {% endfor %}
+
+</ul>
