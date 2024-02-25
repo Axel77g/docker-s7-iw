@@ -2,10 +2,10 @@ services:
   # installation composer dependencies
   composer:
     build:
-      context: .
-      dockerfile: docker/composer/composer.Dockerfile
+      context: docker/composer
+      dockerfile: composer.Dockerfile
     volumes:
-      - .:/var/www/html
+      - ./:/var/www/html
   # database postgres service
   postgres:
     build:
