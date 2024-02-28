@@ -16,6 +16,7 @@ if psql -tAc "SELECT 1 FROM pg_database WHERE datname='$POSTGRES_DB';" | grep -w
   echo "Database $POSTGRES_DB exists."
 else
   echo "Database $POSTGRES_DB does not exist."
+  psql -c "CREATE DATABASE $POSTGRES_DB;"
   new_db=1
 fi
 

@@ -1,18 +1,22 @@
 services:
   # installation composer dependencies
   composer:
-    build:
-      context: docker/composer
-      dockerfile: composer.Dockerfile
+    image: axel77g/composer-tp-docker-esgi:latest
+    platform: linux/amd64
+    #build:
+    #  context: docker/composer
+    #  dockerfile: composer.Dockerfile
     volumes:
       - ./:/var/www/html
     networks:
       - dockerNetwork
   # database postgres service
   postgres:
-    build:
-      context: docker/postgres
-      dockerfile: postgres.Dockerfile
+    image: axel77g/postgres-tp-docker-esgi:latest
+    platform: linux/amd64
+    #build:
+    #  context: docker/postgres
+    #  dockerfile: postgres.Dockerfile
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-testing}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-testing}
@@ -22,15 +26,21 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-testing} -d ${POSTGRES_DB:-postgres}" ]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-testing} -d ${POSTGRES_DB:-postgres}",
+        ]
       interval: 10s
       timeout: 5s
       retries: 6
   # symfony service
   symfony:
-    build:
-      context: docker/symfony
-      dockerfile: symfony.Dockerfile
+    image: axel77g/symfony-tp-docker-esgi:latest
+    platform: linux/amd64
+    #build:
+    #  context: docker/symfony
+    #  dockerfile: symfony.Dockerfile
     volumes:
       - ./:/var/www/html
     depends_on:
@@ -44,9 +54,11 @@ services:
       - dockerNetwork
   # database adminer service
   adminer:
-    build:
-        context: docker/adminer
-        dockerfile: adminer.Dockerfile
+    image: axel77g/adminer-tp-docker-esgi:latest
+    platform: linux/amd64
+    #build:
+    #    context: docker/adminer
+    #    dockerfile: adminer.Dockerfile
     ports:
       - 8080:8080
     depends_on:
@@ -58,4 +70,4 @@ networks:
   dockerNetwork:
     driver: bridge
 volumes:
-    postgres:
+  postgres:
