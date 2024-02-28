@@ -34,11 +34,11 @@ Rendez-vous sur la route `http://localhost:8000/todo` pour visualiser les todos 
 
 ## Mise en ligne des images
 
-> Pour mettre en ligne les images nous avons décider de faire en sorte quelles soient disponible sur les plateformes linux/amd64 et linux/arm64 qui permet une portabilité accrue.
+> Pour mettre en ligne les images, nous avons décidé de les rendre disponibles sur les plateformes linux/amd64 et linux/arm64 afin d'assurer une portabilité accrue.
 
-Nous avons créer un fichier `builder.sh` qui permet de builder tous les dockerFile présent dans le projet avec leur contexte respectif.
+Nous avons créé un fichier `builder.sh` qui permet de construire tous les fichiers Docker présents dans le projet avec leur contexte respectif.
 
-Le push des images se fait automatiquement, l'utilisation de buildx permet de builder les images pour les plateformes linux/amd64 et linux/arm64 en même temps.
+Le push des images se fait automatiquement ; l'utilisation de buildx permet de construire les images pour les plateformes linux/amd64 et linux/arm64 simultanément.
 
 ```sh
 sh ./builder.sh
